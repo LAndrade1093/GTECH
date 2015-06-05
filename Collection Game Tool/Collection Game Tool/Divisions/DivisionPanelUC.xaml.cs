@@ -43,6 +43,12 @@ namespace Collection_Game_Tool.Divisions
             divisionCounterLabel.Content = divisionsHolderPanel.Children.Count;
         }
 
+        /// <summary>
+        /// Called once, after the DivisionPanelUC is loaded
+        /// Gets the parent window of the this user control and adds it to this class' list of listeners
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DivisionPanelUC_Loaded(object sender, RoutedEventArgs e)
         {
             Window parentWindow = Window.GetWindow(this.Parent);
@@ -50,6 +56,11 @@ namespace Collection_Game_Tool.Divisions
             addDivision();
         }
 
+        /// <summary>
+        /// Adds a new division to the GUI and the list of divisions,
+        /// if the list hasn't exceeded 30 divisions
+        ///     If it has, the add button is disabled and grayed out
+        /// </summary>
         public void addDivision()
         {
             if (divisionsList.getSize() < MAX_DIVISIONS)
@@ -76,6 +87,10 @@ namespace Collection_Game_Tool.Divisions
             isSectionEmpty();
         }
 
+        /// <summary>
+        /// Takes in an existing or loaded division and adds it to the list of available divisions
+        /// </summary>
+        /// <param name="div">The existing division, mostl likely loaded from a saved file</param>
         public void loadInDivision(DivisionModel div)
         {
             if (divisionsHolderPanel.Children.Count < MAX_DIVISIONS)
@@ -106,6 +121,10 @@ namespace Collection_Game_Tool.Divisions
             divisionCounterLabel.Content = divisionsHolderPanel.Children.Count;
         }
 
+        /// <summary>
+        /// Removes a division from the list and the UI at the specified index
+        /// </summary>
+        /// <param name="index">the index location of the division to remove</param>
         public void removeDivision(int index)
         {
             for (int i = index; i < divisionsList.getSize(); i++)
@@ -129,12 +148,24 @@ namespace Collection_Game_Tool.Divisions
             divisionCounterLabel.Content = divisionsHolderPanel.Children.Count;
         }
 
+        /// <summary>
+        /// A button cliked event for when the user wants to add a division
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void addDivisionButton_Click(object sender, RoutedEventArgs e)
         {
             addDivision();
             divisionsScroll.ScrollToBottom();
         }
 
+        /// <summary>
+        /// Validates each division
+        ///     -Determines if the division is empty (has no selected prize levels)
+        ///     -Validates a division's uniqueness from other divisions
+        ///     -Validates whether a division's total collections is less than the total picks set
+        ///     -Validates whether or not a division can have an instant win prize level
+        /// </summary>
         public void validateDivision()
         {
             checkDivisionsPicks();
@@ -260,6 +291,10 @@ namespace Collection_Game_Tool.Divisions
                 ErrorService.Instance.resolveError("012", null, dpucID);
         }
 
+        /// <summary>
+        /// Checks to see if there are no divisions in the list
+        ///     If it there aren't any, this will send an error
+        /// </summary>
         private void isSectionEmpty()
         {
             if (divisionsList.getSize() <= 0)
@@ -272,6 +307,9 @@ namespace Collection_Game_Tool.Divisions
             }
         }
 
+        /// <summary>
+        /// Validates that each division's total player picks is less than or equal to the set number of player picks
+        /// </summary>
         private void checkDivisionsPicks()
         {
             for (int index = 0; index < divisionsHolderPanel.Children.Count; index++)
@@ -288,6 +326,10 @@ namespace Collection_Game_Tool.Divisions
             }
         }
 
+        /// <summary>
+        /// Gets called when the class is registered to another class' shout
+        /// </summary>
+        /// <param name="pass"></param>
         public void onListen(object pass)
         {
             if (pass is PrizeLevels.PrizeLevels)
@@ -302,6 +344,10 @@ namespace Collection_Game_Tool.Divisions
             shout(pass);
         }
 
+        /// <summary>
+        /// Calls of the listeners in the listener list
+        /// </summary>
+        /// <param name="pass"></param>
         public void shout(object pass)
         {
             foreach (Listener list in listenerList)
@@ -310,6 +356,10 @@ namespace Collection_Game_Tool.Divisions
             }
         }
 
+        /// <summary>
+        /// Adds a listener to the list
+        /// </summary>
+        /// <param name="list"></param>
         public void addListener(Listener list)
         {
             listenerList.Add(list);

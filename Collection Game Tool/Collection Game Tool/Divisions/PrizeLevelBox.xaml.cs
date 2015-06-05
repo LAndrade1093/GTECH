@@ -35,6 +35,12 @@ namespace Collection_Game_Tool.Divisions
             prizeLevelLabel.DataContext = levelModel;
         }
 
+        /// <summary>
+        /// The event fired when a prize level box in a division is clicked on
+        /// Switches the selected level box's state between selected and not selected
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void levelBox_MouseDown(object sender, MouseButtonEventArgs e)
         {
             levelModel.switchIsSelected();
